@@ -101,7 +101,10 @@ document.addEventListener("DOMContentLoaded",function(){
         setTarget(tempDate,tempTime)
     }
     localHeader=window.localStorage.getItem("localHeader")
-    header.innerText=localHeader
+    if(localHeader){
+        header.innerText=localHeader
+    }
+    
     
 })
 
