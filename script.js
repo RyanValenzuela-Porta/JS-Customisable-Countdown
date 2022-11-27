@@ -5,12 +5,23 @@ const secs = document.getElementById("secs")
 const cal = document.getElementById("calendar")
 const time=document.getElementById("time")
 const body = document.getElementById("main")
+const clear = document.getElementById("clear")
 let header=document.getElementById("header")
 let date=new Date()
 let todayms = date.getTime()
 let targetDate = new Date()
 let localData;
 let localHeader;
+clear.addEventListener("click",function(){
+    clearInterval(loop)
+    header.innerText="[Click here to edit the title]"
+    days.innerHTML="--"
+    hours.innerHTML="--"
+    mins.innerHTML="--"
+    secs.innerHTML="--"
+    window.localStorage.removeItem("localData")
+    window.localStorage.removeItem("localHeader")
+})
 body.addEventListener("click",function(){
     //console.log("body clicked")
     window.localStorage.setItem("localHeader",header.innerText);
@@ -103,9 +114,7 @@ document.addEventListener("DOMContentLoaded",function(){
     localHeader=window.localStorage.getItem("localHeader")
     if(localHeader){
         header.innerText=localHeader
-    }
-    
-    
+    }   
 })
 
 (window.myTop || window).noPromptOnUnload = true
