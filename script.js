@@ -6,31 +6,65 @@ const cal = document.getElementById("calendar")
 const time=document.getElementById("time")
 const body = document.getElementById("main")
 const clear = document.getElementById("clear")
+let timerText = document.getElementById("timer-text")
 let header=document.getElementById("header")
+let bottomText = document.getElementById("bottom-text")
 let date=new Date()
 let todayms = date.getTime()
 let targetDate = new Date()
-let localData;
-let localHeader;
+var localData;
+var localHeader;
+var bgImageURL;
+var colorHex;
+//change font color
+const color = document.getElementById("color")
+
+function setColors(hex){
+    body.style.color=hex
+    timerText.style.color=hex
+    bottomText.style.color=hex
+}
+color.addEventListener("change",function(){
+    console.log(color.value)
+    setColors(color.value)
+    window.localStorage.setItem("font-color",color.value)
+})
+//upload image
+const image = document.getElementById("image")
+var uploaded_image=""
+image.addEventListener("change",function(){
+    const reader = new FileReader()
+    reader.addEventListener("load",()=>{
+        console.log("dataURl received")
+        window.localStorage.setItem("bg-image",reader.result)
+        uploaded_image=reader.result
+        body.style.backgroundImage=`url(${uploaded_image})`
+    })
+    reader.readAsDataURL(this.files[0])
+})
+//runs when clear button is pressed
 clear.addEventListener("click",function(){
     clearInterval(loop)
+    body.style.backgroundImage=`url()`
     header.innerText="[Click here to edit the title]"
     days.innerHTML="--"
     hours.innerHTML="--"
     mins.innerHTML="--"
     secs.innerHTML="--"
+    setColors("#ffffff")
     window.localStorage.removeItem("localData")
     window.localStorage.removeItem("localHeader")
+    window.localStorage.removeItem("bg-image")
+    window.localStorage.removeItem("font-color")
 })
+//resets title to default if left blank
 body.addEventListener("click",function(){
-    //console.log("body clicked")
     window.localStorage.setItem("localHeader",header.innerText);
     if(header.innerText==""){
         header.innerText="[Click here to edit the title]"
     }
 })
 header.addEventListener("click",function(){
-    //console.log("header clicked")
     if(header.innerText=="[Click here to edit the title]"){
         header.innerText=""
     }
@@ -51,7 +85,6 @@ cal.min=todayISO
 //Listen for changes in inputs
 function setTarget(targetDate,targetTime){
     clearInterval(loop)
-    //console.log(targetDate,targetTime)
     let year = parseInt(targetDate.slice(0,4))
     let month = parseInt(targetDate.slice(5,7))-1
     let day = parseInt(targetDate.slice(8))
@@ -82,7 +115,6 @@ function main(targetDate){
     let thenMillisec=targetDate.getTime()
     seconds=Math.floor((thenMillisec-nowMilisec)/1000)
     loop = setInterval(mainLoop, 1000);
-    
 }
 
 function mainLoop(){
@@ -102,7 +134,7 @@ function mainLoop(){
     secs.innerText=countdown
     seconds=seconds-1
 }
-
+// run this code when the webpage loads
 document.addEventListener("DOMContentLoaded",function(){
     localData=JSON.parse(window.localStorage.getItem("localData"))
     console.log(localData)
@@ -114,14 +146,14 @@ document.addEventListener("DOMContentLoaded",function(){
     localHeader=window.localStorage.getItem("localHeader")
     if(localHeader){
         header.innerText=localHeader
-    }   
+    }
+    bgImageURL=window.localStorage.getItem("bg-image")
+    if(bgImageURL){
+        console.log("found image url")
+        body.style.backgroundImage=`url(${bgImageURL})`
+    }
+    colorHex=window.localStorage.getItem("font-color")
+    if(colorHex){
+        setColors(colorHex)
+    }
 })
-
-(window.myTop || window).noPromptOnUnload = true
-////main countdown
-// setInterval(function(){
-//     date=new Date()
-//     hours.innerText=date.getHours()<10?"0"+String(date.getHours()):String(date.getHours())
-//     mins.innerText=date.getMinutes()<10?"0"+String(date.getMinutes()):String(date.getMinutes())
-//     secs.innerText=date.getSeconds()<10?"0"+String(date.getSeconds()):String(date.getSeconds())
-// }, 1000);

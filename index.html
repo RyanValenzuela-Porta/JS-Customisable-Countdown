@@ -13,18 +13,29 @@
         <h2 spellcheck="false"contenteditable="true" id="header" >[Click here to edit the title]</h2>
         
         
-        <h1>
+        <h1 id="timer-text">
             <span id="days">--</span>d
             <span id="hours">--</span>h
             <span id="mins">--</span>m
             <span id="secs">--</span>s
         </h1>
-        <p>Select Date and Time</p>
+        <p id="bottom-text">Select Date and Time</p>
+        
         <div>
             <input title="calendar" type="date" id="calendar">
             <input title="time" type="time" id="time">
+            
         </div>
-        <input title="clear" type="button" id="clear"value="Clear All">
+        <div>
+            <input title="clear" type="button" id="clear"value="Clear All">
+            
+            
+        </div>
+        <div>
+            <p>Font Colour:</p><input title="color"type="color" id="color" value="#FFFFFF">
+            <input title="upload"type="file" id="image" accept="image/*">
+        </div>
+        
     </main>
 </body>
 </html>
