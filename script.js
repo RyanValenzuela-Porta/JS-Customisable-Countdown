@@ -43,14 +43,17 @@ image.addEventListener("change",function(){
     reader.readAsDataURL(this.files[0])
 })
 //runs when clear button is pressed
-clear.addEventListener("click",function(){
-    clearInterval(loop)
-    body.style.backgroundImage=`url()`
-    header.innerText="[Click here to edit the title]"
+function resetTimer(){
     days.innerHTML="--"
     hours.innerHTML="--"
     mins.innerHTML="--"
     secs.innerHTML="--"
+}
+clear.addEventListener("click",function(){
+    clearInterval(loop)
+    body.style.backgroundImage=`url()`
+    header.innerText="[Click here to edit the title]"
+    resetTimer()
     setColors("#ffffff")
     window.localStorage.removeItem("localData")
     window.localStorage.removeItem("localHeader")
@@ -132,6 +135,10 @@ function mainLoop(){
     hours.innerText=numHours
     mins.innerText=numMin
     secs.innerText=countdown
+    if(numDays<0){
+        clearInterval(loop)
+        resetTimer()
+    }
     seconds=seconds-1
 }
 // run this code when the webpage loads
